@@ -2,7 +2,7 @@
 Centralizando todos los routers
 """
 
-from app.api.v1.endpoints.deportivo import router as sesiones
+from app.api.v1.endpoints.sesiones import router as sesiones_router
 from app.api.v1.endpoints import mantenimiento
 from fastapi import APIRouter
 
@@ -24,7 +24,7 @@ api_router.include_router(auth.router, tags=["Autenticación"])
 api_router.include_router(maquinas.router, tags=["Máquinas"])
 api_router.include_router(categorias_maquinas.router, tags=["Categorías de Máquinas"])
 api_router.include_router(mantenimiento.router, tags=["Mantenimiento"])
-api_router.include_router(sesiones, tags=["Deportivo"])
+api_router.include_router(sesiones_router, tags=["Deportivo"])
 api_router.include_router(reservas.router, tags=["Reservas"])
 api_router.include_router(clientes.router, tags=["Clientes"])
 api_router.include_router(entrenadores.router, tags=["Entrenadores"])
