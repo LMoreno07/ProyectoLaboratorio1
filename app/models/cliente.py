@@ -35,7 +35,7 @@ class Cliente(Base):
     # Relaciones
     usuario = relationship("Usuario", back_populates="cliente")
     membresias = relationship("Membresia", back_populates="cliente")
-#    reservas = relationship("Reserva", back_populates="cliente")
+    reservas = relationship("Reserva", back_populates="cliente")
 #    accesos = relationship("ControlAcceso", back_populates="cliente")
 #    evaluaciones = relationship("EvaluacionBiometrica", back_populates="cliente")
     ventas = relationship("VentaTienda", back_populates="cliente")
