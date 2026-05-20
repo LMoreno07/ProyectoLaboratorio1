@@ -12,7 +12,11 @@ class Entrenador(Base):
     activo = Column(Boolean, default=True)
    
     usuario = relationship("Usuario", back_populates="entrenador")
+<<<<<<< HEAD
     #sesiones = relationship("SesionProgramada", back_populates="entrenador")
+=======
+    sesiones = relationship("Sesion", back_populates="entrenador")
+>>>>>>> c9029992fc74f960ee6197d43e9fb450ccf69db3
     #evaluaciones = relationship("EvaluacionBiometrica", back_populates="entrenador")
    
     def __repr__(self):

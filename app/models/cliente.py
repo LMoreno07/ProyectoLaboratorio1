@@ -34,7 +34,11 @@ class Cliente(Base):
     
     # Relaciones
     usuario = relationship("Usuario", back_populates="cliente")
+<<<<<<< HEAD
 #    membresias = relationship("Membresia", back_populates="cliente")
+=======
+    membresias = relationship("Membresia", back_populates="cliente")
+>>>>>>> c9029992fc74f960ee6197d43e9fb450ccf69db3
 #    reservas = relationship("Reserva", back_populates="cliente")
 #    accesos = relationship("ControlAcceso", back_populates="cliente")
 #    evaluaciones = relationship("EvaluacionBiometrica", back_populates="cliente")

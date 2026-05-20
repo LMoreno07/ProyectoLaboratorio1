@@ -1,15 +1,25 @@
 """
 Endpoints para gestión de Clientes
 """
+<<<<<<< HEAD
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
+=======
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+from typing import List
+
+>>>>>>> c9029992fc74f960ee6197d43e9fb450ccf69db3
 from app.models.database import get_db
 from app.models.cliente import Cliente
 from app.models.usuario import Usuario
 from app.schemas.cliente import ClienteCreate, ClienteUpdate, ClienteResponse
+<<<<<<< HEAD
 from app.schemas.evaluacion_biometrica import EvaluacionBiometricaCreate, EvaluacionBiometricaResponse
 from app.models.evaluacion_biometrica import EvaluacionBiometrica
+=======
+>>>>>>> c9029992fc74f960ee6197d43e9fb450ccf69db3
 
 router = APIRouter(
     prefix="/clientes",
@@ -88,6 +98,7 @@ def actualizar_cliente(
     
     db.commit()
     db.refresh(cliente)
+<<<<<<< HEAD
     return cliente
 
 # Registrar una nueva evaluación para un cliente
@@ -126,3 +137,6 @@ def obtener_evolucion_cliente(id: int, db: Session = Depends(get_db)):
                   .order_by(EvaluacionBiometrica.created_at.asc())\
                   .all()
     return historial
+=======
+    return cliente
+>>>>>>> c9029992fc74f960ee6197d43e9fb450ccf69db3

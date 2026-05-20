@@ -11,6 +11,7 @@ from app.api.v1.endpoints import roles, usuarios, auth, maquinas, categorias_maq
     #finanzas,
     #tienda,
     #biometrico
+    #biometrico
 #)
 
 #Router principal para agrupar todos los modulos

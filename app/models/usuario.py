@@ -68,6 +68,11 @@ class Usuario(Base):
         back_populates = "usuario", 
         uselist=False
         )
+<<<<<<< HEAD
+=======
+    
+    
+>>>>>>> c9029992fc74f960ee6197d43e9fb450ccf69db3
     entrenador = relationship(
         "Entrenador", 
         back_populates = "usuario", 
