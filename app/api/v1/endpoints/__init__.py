@@ -1,1 +1,4 @@
-# Vacío... Mancando el directorio como paquete Python
+"""Package entrypoint for API endpoint modules."""
+
+from . import deportivo as sesiones
+

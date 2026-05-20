@@ -1,14 +1,25 @@
 """
 Endpoints para gestión de Clientes
 """
+<<<<<<< HEAD
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
+from typing import List
+=======
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 
+>>>>>>> c9029992fc74f960ee6197d43e9fb450ccf69db3
 from app.models.database import get_db
 from app.models.cliente import Cliente
 from app.models.usuario import Usuario
 from app.schemas.cliente import ClienteCreate, ClienteUpdate, ClienteResponse
+<<<<<<< HEAD
+from app.schemas.evaluacion_biometrica import EvaluacionBiometricaCreate, EvaluacionBiometricaResponse
+from app.models.evaluacion_biometrica import EvaluacionBiometrica
+=======
+>>>>>>> c9029992fc74f960ee6197d43e9fb450ccf69db3
 
 router = APIRouter(
     prefix="/clientes",
@@ -87,4 +98,45 @@ def actualizar_cliente(
     
     db.commit()
     db.refresh(cliente)
+<<<<<<< HEAD
     return cliente
+
+# Registrar una nueva evaluación para un cliente
+@router.post("/{id}/evaluaciones", response_model=EvaluacionBiometricaResponse, status_code=status.HTTP_201_CREATED)
+def registrar_evaluacion_biometrica(id: int, evaluacion: EvaluacionBiometricaCreate, db: Session = Depends(get_db)):
+    # 1. Verificar que el cliente exista
+    cliente = db.query(Usuario).filter(Usuario.id == id).first()
+    if not cliente:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="El cliente solicitado no existe."
+        )
+    
+    # ID del entrenador simulado temporalmente
+    id_entrenador_logueado = 2 
+
+    nueva_ficha = EvaluacionBiometrica(
+        cliente_id=id,
+        entrenador_id=id_entrenador_logueado,
+        peso=evaluacion.peso,
+        grasa=evaluacion.grasa,
+        estatura=evaluacion.estatura
+    )
+    
+    db.add(nueva_ficha)
+    db.commit()
+    db.refresh(nueva_ficha)
+    return nueva_ficha
+
+
+# Obtener el historial de evolución biométrica
+@router.get("/{id}/evolucion", response_model=List[EvaluacionBiometricaResponse])
+def obtener_evolucion_cliente(id: int, db: Session = Depends(get_db)):
+    historial = db.query(EvaluacionBiometrica)\
+                  .filter(EvaluacionBiometrica.cliente_id == id)\
+                  .order_by(EvaluacionBiometrica.created_at.asc())\
+                  .all()
+    return historial
+=======
+    return cliente
+>>>>>>> c9029992fc74f960ee6197d43e9fb450ccf69db3

@@ -3,7 +3,7 @@ Modelo ORM (Objets relationship Mapping) para la tabla 'usuarios'
 """
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
-from app.models import Base
+from app.models.database import Base
 from datetime import datetime
 
 class Usuario(Base):
@@ -68,8 +68,11 @@ class Usuario(Base):
         back_populates = "usuario", 
         uselist=False
         )
+<<<<<<< HEAD
+=======
     
     
+>>>>>>> c9029992fc74f960ee6197d43e9fb450ccf69db3
     entrenador = relationship(
         "Entrenador", 
         back_populates = "usuario", 
