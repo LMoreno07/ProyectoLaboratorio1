@@ -38,7 +38,7 @@ class Cliente(Base):
 #    reservas = relationship("Reserva", back_populates="cliente")
 #    accesos = relationship("ControlAcceso", back_populates="cliente")
 #    evaluaciones = relationship("EvaluacionBiometrica", back_populates="cliente")
-#    ventas = relationship("VentaTienda", back_populates="cliente")
+    ventas = relationship("VentaTienda", back_populates="cliente")
     
     def __repr__(self):
         return f"<Cliente(id={self.id}, cedula='{self.cedula}')>"

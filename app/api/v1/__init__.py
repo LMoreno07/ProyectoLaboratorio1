@@ -6,7 +6,7 @@ from app.api.v1.endpoints import sesiones
 from app.api.v1.endpoints import mantenimiento
 from fastapi import APIRouter
 
-from app.api.v1.endpoints import roles, usuarios, auth, maquinas, planes,categorias_maquinas, reservas, clientes, pagos, entrenadores, membresias
+from app.api.v1.endpoints import roles, usuarios, auth, maquinas, ventas, productos,planes,categorias_maquinas, reservas, clientes, pagos, entrenadores, membresias
     #acceso,
     #finanzas,
     #tienda,
@@ -33,4 +33,6 @@ api_router.include_router(planes.router, tags=["Finanzas"])
 #api_router.include_router(acceso.router, tags=["Acceso"])
 #api_router.include_router(finanzas.router, tags=["Finanzas"])
 #api_router.include_router(tienda.router, tags=["Tienda"])
+api_router.include_router(productos.router, tags=["Tienda"])
+api_router.include_router(ventas.router, tags=["Tienda"])
 #pi_router.include_router(biometrico.router, tags=["Biométrico"])

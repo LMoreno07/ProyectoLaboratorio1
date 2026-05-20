@@ -24,6 +24,9 @@ from app.models import Sesion
 from app.models import Pago
 from app.models import Membresia
 from app.models import PlanSuscripcion
+from app.models import ProductoTienda
+from app.models import VentaTienda
+from app.models import DetalleVenta
  #   ControlAcceso, PlanSuscripcion, Membresia, Pago,
  #   CategoriaMaquina, Maquina, TicketMantenimiento,
  #   ProductoTienda, VentaTienda, DetalleVenta,

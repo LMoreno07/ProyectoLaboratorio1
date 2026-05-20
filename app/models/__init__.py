@@ -19,7 +19,7 @@ from app.models.pago import Pago
 from app.models.categorias_maquinas import CategoriaMaquina
 from app.models.maquina import Maquina
 from app.models.ticket_mantenimiento import TicketMantenimiento
-#from app.models.producto_tienda import ProductoTienda
-#from app.models.venta_tienda import VentaTienda
-#from app.models.detalle_venta import DetalleVenta
+from app.models.producto_tienda import ProductoTienda
+from app.models.venta_tienda import VentaTienda
+from app.models.detalle_venta import DetalleVenta
 #from app.models.evaluacion_biometrica import EvaluacionBiometrica
