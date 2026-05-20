@@ -7,8 +7,8 @@ Importa todos los modelos para que SQLAlchemy los registre
 from app.models.database import Base, get_db, engine, SessionLocal
 from app.models.rol import Rol
 from app.models.usuario import Usuario
-#from app.models.cliente import Cliente
-#from app.models.entrenador import Entrenador
+from app.models.cliente import Cliente
+from app.models.entrenador import Entrenador
 from app.models.disciplina import Disciplina
 from app.models.sesion import Sesion
 from app.models.reserva import Reserva

@@ -12,8 +12,15 @@ from app.core.config import settings
 
 #from app.models import Rol, Usuario, CategoriaMaquina, Maquina
 #from app.models import Rol, Usuario #, Cliente, Entrenador,
-#from app.models import Rol, Usuario, Maquina, Categoria #, Cliente, Entrenador,
- #   Disciplina, SesionProgramada, Reserva,
+from app.models import Rol
+from app.models import Usuario
+from app.models import Maquina
+from app.models import CategoriaMaquina
+from app.models import Cliente
+from app.models import Entrenador
+from app.models import Reserva
+from app.models import Disciplina 
+from app.models import Sesion
  #   ControlAcceso, PlanSuscripcion, Membresia, Pago,
  #   CategoriaMaquina, Maquina, TicketMantenimiento,
  #   ProductoTienda, VentaTienda, DetalleVenta,

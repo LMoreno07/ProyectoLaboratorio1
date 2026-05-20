@@ -7,6 +7,6 @@ class Reserva(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     cliente_id = Column(Integer, ForeignKey("usuarios.id"), nullable=False) # Asumiendo que clientes son usuarios
-    sesion_id = Column(Integer, ForeignKey("sesiones.id"), nullable=False)
+    sesion_id = Column(Integer, ForeignKey("sesiones_programadas.id"), nullable=False)
 
     sesion = relationship("Sesion", back_populates="reservas")
