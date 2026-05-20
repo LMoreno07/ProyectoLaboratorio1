@@ -32,11 +32,9 @@ class Cliente(Base):
     direccion = Column(String(255), nullable=True)
     fecha_registro = Column(DateTime, default=datetime.now())
     
+    
     # Relaciones
     usuario = relationship("Usuario", back_populates="cliente")
-<<<<<<< HEAD
-#    membresias = relationship("Membresia", back_populates="cliente")
-=======
     membresias = relationship("Membresia", back_populates="cliente")
     reservas = relationship("Reserva", back_populates="cliente")
 #    accesos = relationship("ControlAcceso", back_populates="cliente")

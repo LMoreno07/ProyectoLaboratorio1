@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from pydantic import BaseModel
 from typing import Optional
 
@@ -12,7 +11,6 @@ class EntrenadorBase(BaseModel):
 class EntrenadorCreate(EntrenadorBase):
     pass
 
-=======
 from pydantic import BaseModel, Field
 from typing import Optional
 
@@ -28,20 +26,17 @@ class EntrenadorCreate(BaseModel):
                 "especialidad": "CrossFit"
             }
         }
->>>>>>> c9029992fc74f960ee6197d43e9fb450ccf69db3
 
 class EntrenadorUpdate(BaseModel):
     especialidad: Optional[str] = None
     activo: Optional[bool] = None
 
-<<<<<<< HEAD
 
 class EntrenadorResponse(EntrenadorBase):
     id: int
 
     class Config:
         from_attributes = True
-=======
 class EntrenadorResponse(BaseModel):
     id: int
     usuario_id: int
@@ -50,4 +45,3 @@ class EntrenadorResponse(BaseModel):
    
     class Config:
         from_attributes = True
->>>>>>> c9029992fc74f960ee6197d43e9fb450ccf69db3

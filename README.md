@@ -71,17 +71,11 @@ API RESTful para la gestión integral del gimnasio SmartGym. Centraliza operacio
 ### 1. Clonar el repositorio
 
 ```bash
-<<<<<<< HEAD
 
 git clone https://github.com/TU-USUARIO/smartgym-api.git
 
-=======
-<<<<<<< HEAD
 git clone https://github.com/LMoreno07/ProyectoLaboratorio1.git
-=======
 git clone https://github.com/TU-USUARIO/smartgym-api.git
->>>>>>> adrian/main
->>>>>>> 72b2b31e65c4e9ed1a165be28bd25948483dc50c
 cd smartgym-api
 ```
 
