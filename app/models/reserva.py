@@ -10,7 +10,7 @@ class Reserva(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     cliente_id = Column(Integer, ForeignKey("clientes.id"), nullable=False)
     sesion_id = Column(Integer, ForeignKey("sesiones_programadas.id"), nullable=False)
-    fecha_reserva = Column(DateTime, default=datetime.utcnow)
+    fecha_reserva = Column(DateTime, default=datetime.now())
     asistio = Column(Boolean, default=False)
     
     cliente = relationship("Cliente", back_populates="reservas")

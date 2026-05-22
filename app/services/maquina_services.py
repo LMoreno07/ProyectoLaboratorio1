@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 
 from fastapi import HTTPException
 from app.models.maquina import Maquina
-from app.models.categorias_maquinas import CategoriaMaquina
+from app.models.categoria_maquina import CategoriaMaquina
 from app.schemas.maquina import MaquinaCreate
 
 def crear_maquina(db: Session, maquina: MaquinaCreate):

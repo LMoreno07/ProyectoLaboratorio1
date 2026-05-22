@@ -1,22 +1,22 @@
-from sqlalchemy import Column, Integer, Float, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, Date, Numeric, ForeignKey
 from sqlalchemy.orm import relationship
-from sqlalchemy.sql import func
 from app.models.database import Base
+
 
 class EvaluacionBiometrica(Base):
     __tablename__ = "evaluaciones_biometricas"
-
-    id = Column(Integer, primary_key=True, index=True)
-    cliente_id = Column(Integer, ForeignKey("usuarios.id"), nullable=False)
-    entrenador_id = Column(Integer, ForeignKey("usuarios.id"), nullable=False)
     
-    # Métricas físicas exactas solicitadas en el RF8
-    peso = Column(Float, nullable=False)        # En kilogramos
-    grasa = Column(Float, nullable=False)       # Porcentaje de grasa corporal
-    estatura = Column(Float, nullable=False)    # En metros
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    cliente_id = Column(Integer, ForeignKey("clientes.id"), nullable=False)
+    entrenador_id = Column(Integer, ForeignKey("entrenadores.id"), nullable=False)
+    fecha = Column(Date, nullable=False)
+    peso_kg = Column(Numeric(5, 2), nullable=True)
+    estatura_cm = Column(Numeric(5, 2), nullable=True)
+    porcentaje_grasa = Column(Numeric(5, 2), nullable=True)
+    observaciones = Column(String(255), nullable=True)
     
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-
-    # Relaciones
-    cliente = relationship("Usuario", foreign_keys=[cliente_id])
-    entrenador = relationship("Usuario", foreign_keys=[entrenador_id])
+    cliente = relationship("Cliente", back_populates="evaluaciones")
+    entrenador = relationship("Entrenador", back_populates="evaluaciones")
+    
+    def __repr__(self):
+        return f"<Evaluacion(id={self.id}, cliente={self.cliente_id}, fecha={self.fecha})>"

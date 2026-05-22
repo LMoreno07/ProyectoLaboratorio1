@@ -14,7 +14,7 @@ class Entrenador(Base):
     usuario = relationship("Usuario", back_populates="entrenador")
     #sesiones = relationship("SesionProgramada", back_populates="entrenador")
     sesiones = relationship("Sesion", back_populates="entrenador")
-    #evaluaciones = relationship("EvaluacionBiometrica", back_populates="entrenador")
+    evaluaciones = relationship("EvaluacionBiometrica", back_populates="entrenador")
    
     def __repr__(self):
         return f"<Entrenador(id={self.id}, especialidad='{self.especialidad}')>"

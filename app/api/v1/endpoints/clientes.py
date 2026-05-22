@@ -12,7 +12,7 @@ from app.models.database import get_db
 from app.models.cliente import Cliente
 from app.models.usuario import Usuario
 from app.schemas.cliente import ClienteCreate, ClienteUpdate, ClienteResponse
-from app.schemas.evaluacion_biometrica import EvaluacionBiometricaCreate, EvaluacionBiometricaResponse
+from app.schemas.evaluacion_biometrica import EvaluacionUpdate, EvaluacionCreate, EvaluacionResponse 
 from app.models.evaluacion_biometrica import EvaluacionBiometrica
 
 router = APIRouter(
@@ -95,8 +95,8 @@ def actualizar_cliente(
     return cliente
 
 # Registrar una nueva evaluación para un cliente
-@router.post("/{id}/evaluaciones", response_model=EvaluacionBiometricaResponse, status_code=status.HTTP_201_CREATED)
-def registrar_evaluacion_biometrica(id: int, evaluacion: EvaluacionBiometricaCreate, db: Session = Depends(get_db)):
+@router.post("/{id}/evaluaciones", response_model=EvaluacionResponse, status_code=status.HTTP_201_CREATED)
+def registrar_evaluacion_biometrica(id: int, evaluacion: EvaluacionCreate, db: Session = Depends(get_db)):
     # 1. Verificar que el cliente exista
     cliente = db.query(Usuario).filter(Usuario.id == id).first()
     if not cliente:
@@ -111,9 +111,9 @@ def registrar_evaluacion_biometrica(id: int, evaluacion: EvaluacionBiometricaCre
     nueva_ficha = EvaluacionBiometrica(
         cliente_id=id,
         entrenador_id=id_entrenador_logueado,
-        peso=evaluacion.peso,
-        grasa=evaluacion.grasa,
-        estatura=evaluacion.estatura
+        peso=evaluacion.peso_kg,
+        grasa=evaluacion.porcentaje_grasa,
+        estatura=evaluacion.estatura_cm
     )
     
     db.add(nueva_ficha)
@@ -123,7 +123,7 @@ def registrar_evaluacion_biometrica(id: int, evaluacion: EvaluacionBiometricaCre
 
 
 # Obtener el historial de evolución biométrica
-@router.get("/{id}/evolucion", response_model=List[EvaluacionBiometricaResponse])
+@router.get("/{id}/evolucion", response_model=List[EvaluacionResponse])
 def obtener_evolucion_cliente(id: int, db: Session = Depends(get_db)):
     historial = db.query(EvaluacionBiometrica)\
                   .filter(EvaluacionBiometrica.cliente_id == id)\

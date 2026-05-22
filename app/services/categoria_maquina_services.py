@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
-from app.models.categorias_maquinas import CategoriaMaquina
+from app.models.categoria_maquina import CategoriaMaquina
 from app.schemas.categoria_maquina import CategoriaMaquinaCreate
 
 def crear_categoria(db: Session, categoria: CategoriaMaquinaCreate):
