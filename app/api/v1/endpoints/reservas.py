@@ -29,23 +29,25 @@ def crear_reserva(datos: ReservaCreate, db: Session = Depends(get_db)):
         raise HTTPException(409, "La sesión no tiene cupos disponibles")
     
     # Validación 2: Solapamiento de CLIENTE
-    conflicto = db.query(Reserva).join(Sesion).filter(
+    conflicto_cliente = db.query(Reserva).join(Sesion).filter(
         Reserva.cliente_id == datos.cliente_id,
         Sesion.fecha == sesion.fecha,
         Sesion.hora_inicio < sesion.hora_fin,
-        Sesion.hora_fin > sesion.hora_inicio
+        Sesion.hora_fin > sesion.hora_inicio,
+        Sesion.id != sesion.id
     ).first()
-    if conflicto:
+    if conflicto_cliente:
         raise HTTPException(409, "Ya tienes una reserva en ese horario")
     
     # Validación 3: Solapamiento de ENTRENADOR
-    entrenador_ocupado = db.query(Reserva).join(Sesion).filter(
+    conflicto_entrenador = db.query(Reserva).join(Sesion).filter(
         Sesion.entrenador_id == sesion.entrenador_id,
         Sesion.fecha == sesion.fecha,
         Sesion.hora_inicio < sesion.hora_fin,
-        Sesion.hora_fin > sesion.hora_inicio
+        Sesion.hora_fin > sesion.hora_inicio,
+        Sesion.id != sesion.id
     ).first()
-    if entrenador_ocupado:
+    if conflicto_entrenador:
         raise HTTPException(409, "El entrenador ya tiene una clase en ese horario")
     
     # Crear reserva y actualizar cupos
@@ -90,7 +92,8 @@ def cancelar_reserva(reserva_id: int, db: Session = Depends(get_db)):
     
     # Liberar cupo
     sesion = db.query(Sesion).filter(Sesion.id == reserva.sesion_id).first()
-    sesion.cupos_ocupados -= 1
+    if sesion:
+        sesion.cupos_ocupados -= 1
     
     db.delete(reserva)
     db.commit()
