@@ -3,10 +3,13 @@ Configuración de la conexión a la base de datos usando SQLAlchemy
 """
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
-from app.core.config import settings
+import os
+
+# Leer URL del entorno
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 # Crear el motor de base de datos
-engine = create_engine(settings.DATABASE_URL)
+engine = create_engine(DATABASE_URL)
 
 # Fábrica de sesiones: cada petición HTTP obtiene su propia sesión
 SessionLocal = sessionmaker(

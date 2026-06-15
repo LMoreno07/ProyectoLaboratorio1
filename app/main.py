@@ -67,3 +67,22 @@ def health_check():
         "database": "connected",
         "TEAM":"Escuadron Mete La Pata :)"
     }
+
+from app.core.dependencies import get_current_user
+from app.models.usuario import Usuario
+from fastapi import Depends
+from sqlalchemy.orm import Session
+from app.models.database import get_db
+
+
+@app.get("/test-auth")
+def test_auth(current_user: Usuario = Depends(get_current_user)):
+    return {"id": current_user.id, "email": current_user.email, "rol": current_user.rol.nombre}
+
+@app.get("/test-disciplinas")
+def test_disciplinas(
+    db: Session = Depends(get_db),
+    current_user: Usuario = Depends(get_current_user)
+):
+    print(f"🔍 TEST DISCIPLINAS - Usuario: {current_user.email}")
+    return {"msg": "ok"}

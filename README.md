@@ -41,18 +41,18 @@ API RESTful para la gestión integral del gimnasio SmartGym. Centraliza operacio
 
 ## 🛠️ Stack Tecnológico
 
-| Herramienta | Propósito |
-|-------------|-----------|
-| **Python 3.12** | Lenguaje principal |
-| **FastAPI** | Framework web asíncrono |
-| **PostgreSQL 16** | Base de datos relacional |
-| **SQLAlchemy 2.0** | ORM para acceso a datos |
-| **Alembic** | Migraciones de base de datos |
-| **Pydantic** | Validación de esquemas |
-| **JWT (python-jose)** | Autenticación |
-| **bcrypt (passlib)** | Hasheo de contraseñas |
-| **Docker + Compose** | Contenerización y orquestación |
-| **Swagger/OpenAPI** | Documentación interactiva |
+| Herramienta           | Propósito                      |
+|-----------------------|--------------------------------|
+| **Python 3.12**       | Lenguaje principal             |
+| **FastAPI**           | Framework web asíncrono        |
+| **PostgreSQL 16**     | Base de datos relacional       |
+| **SQLAlchemy 2.0**    | ORM para acceso a datos        |
+| **Alembic**           | Migraciones de base de datos   |
+| **Pydantic**          | Validación de esquemas         |
+| **JWT (python-jose)** | Autenticación                  |
+| **bcrypt (passlib)**  | Hasheo de contraseñas          |
+| **Docker + Compose**  | Contenerización y orquestación |
+| **Swagger/OpenAPI**   | Documentación interactiva      |
 
 ---
 
@@ -71,12 +71,8 @@ API RESTful para la gestión integral del gimnasio SmartGym. Centraliza operacio
 ### 1. Clonar el repositorio
 
 ```bash
-
-git clone https://github.com/TU-USUARIO/smartgym-api.git
-
 git clone https://github.com/LMoreno07/ProyectoLaboratorio1.git
-git clone https://github.com/TU-USUARIO/smartgym-api.git
-cd smartgym-api
+cd ProyectoLaboratorio1
 ```
 
 ### 2. Configurar variables de entorno

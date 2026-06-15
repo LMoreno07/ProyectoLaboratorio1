@@ -7,12 +7,23 @@ from app.api.v1.endpoints.maquinas import router as maquinas_router
 from app.api.v1.endpoints import mantenimiento
 from fastapi import APIRouter
 
-from app.api.v1.endpoints import roles, biometrico, usuarios, auth, ventas, disciplinas, productos,planes,categorias_maquinas, reservas, clientes, pagos, entrenadores, membresias,acceso
-    #finanzas,
-    #tienda,
-    #biometrico
-    #biometrico
-#)
+from app.api.v1.endpoints import (
+    roles, 
+    biometrico, 
+    usuarios, 
+    auth, 
+    ventas, 
+    disciplinas, 
+    productos,
+    planes,
+    categorias_maquinas, 
+    reservas, 
+    clientes, 
+    pagos, 
+    entrenadores, 
+    membresias,
+    acceso
+)
 
 #Router principal para agrupar todos los modulos
 api_router = APIRouter()
@@ -22,7 +33,7 @@ api_router.include_router(roles.router,tags=["Roles"])
 api_router.include_router(usuarios.router, tags=["Usuarios"])
 api_router.include_router(auth.router, tags=["Autenticación"])
 api_router.include_router(maquinas_router, tags=["Máquinas"])
-api_router.include_router(categorias_maquinas.router, tags=["Categorías de Máquinas"])
+api_router.include_router(categorias_maquinas.router, tags=["Máquinas"])
 api_router.include_router(mantenimiento.router, tags=["Mantenimiento"])
 api_router.include_router(sesiones_router, tags=["Deportivo"])
 api_router.include_router(reservas.router, tags=["Reservas"])

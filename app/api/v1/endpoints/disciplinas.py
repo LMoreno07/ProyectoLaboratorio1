@@ -1,46 +1,58 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from typing import List
-
 from app.models.database import get_db
-from app.models.disciplina import Disciplina
+from app.models.usuario import Usuario
 from app.schemas.disciplina import DisciplinaCreate, DisciplinaUpdate, DisciplinaResponse
+from app.services.disciplina_services import (
+    crear_disciplina as _crear,
+    listar_disciplinas as _listar,
+    obtener_disciplina as _obtener,
+    actualizar_disciplina as _actualizar
+)
+from app.core.dependencies import get_current_user, require_role
 
 router = APIRouter(prefix="/disciplinas", tags=["Deportivo"])
 
 
 @router.post("/", response_model=DisciplinaResponse, status_code=201)
-def crear_disciplina(datos: DisciplinaCreate, db: Session = Depends(get_db)):
-    existe = db.query(Disciplina).filter(Disciplina.nombre == datos.nombre).first()
-    if existe:
-        raise HTTPException(409, f"La disciplina '{datos.nombre}' ya existe")
-    disciplina = Disciplina(**datos.model_dump())
-    db.add(disciplina)
-    db.commit()
-    db.refresh(disciplina)
-    return disciplina
+def crear_disciplina(
+    data: DisciplinaCreate,
+    db: Session = Depends(get_db),
+    current_user: Usuario = Depends(require_role("Administrador"))
+):
+    """Crear disciplina."""
+    return _crear(db, data)
 
 
 @router.get("/", response_model=List[DisciplinaResponse])
-def listar_disciplinas(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    return db.query(Disciplina).offset(skip).limit(limit).all()
+def listar_disciplinas(
+    skip: int = 0,
+    limit: int = 10,
+    db: Session = Depends(get_db),
+    current_user: Usuario = Depends(get_current_user)
+):
+    """Listar disciplinas."""
+    #print(f" Usuario: {current_user.email}, Rol: {current_user.rol.nombre}")  # DEBUG
+    return _listar(db, skip, limit)
 
 
 @router.get("/{disciplina_id}", response_model=DisciplinaResponse)
-def obtener_disciplina(disciplina_id: int, db: Session = Depends(get_db)):
-    disciplina = db.query(Disciplina).filter(Disciplina.id == disciplina_id).first()
-    if not disciplina:
-        raise HTTPException(404, "Disciplina no encontrada")
-    return disciplina
+def obtener_disciplina(
+    disciplina_id: int,
+    db: Session = Depends(get_db),
+    current_user: Usuario = Depends(get_current_user)
+):
+    """Obtener disciplina."""
+    return _obtener(db, disciplina_id)
 
 
 @router.patch("/{disciplina_id}", response_model=DisciplinaResponse)
-def actualizar_disciplina(disciplina_id: int, datos: DisciplinaUpdate, db: Session = Depends(get_db)):
-    disciplina = db.query(Disciplina).filter(Disciplina.id == disciplina_id).first()
-    if not disciplina:
-        raise HTTPException(404, "Disciplina no encontrada")
-    for campo, valor in datos.model_dump(exclude_unset=True).items():
-        setattr(disciplina, campo, valor)
-    db.commit()
-    db.refresh(disciplina)
-    return disciplina
+def actualizar_disciplina(
+    disciplina_id: int,
+    data: DisciplinaUpdate,
+    db: Session = Depends(get_db),
+    current_user: Usuario = Depends(require_role("Administrador"))
+):
+    """Actualizar disciplina"""
+    return _actualizar(db, disciplina_id, data)

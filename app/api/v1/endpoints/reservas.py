@@ -1,63 +1,28 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from typing import List
 from app.models.database import get_db
-from app.models.reserva import Reserva
-from app.models.sesion import Sesion
-from app.models.cliente import Cliente
+from app.models.usuario import Usuario
 from app.schemas.reserva import ReservaCreate, ReservaResponse
+from app.services.reserva_service import (
+    crear_reserva as _crear_reserva,
+    listar_reservas as _listar_reservas,
+    obtener_reserva as _obtener_reserva,
+    cancelar_reserva as _cancelar_reserva
+)
+from app.core.dependencies import get_current_user, require_role  #  Protección
 
 router = APIRouter(prefix="/reservas", tags=["Reservas"])
 
 
 @router.post("/", response_model=ReservaResponse, status_code=201)
-def crear_reserva(datos: ReservaCreate, db: Session = Depends(get_db)):
-    # Validar cliente
-    cliente = db.query(Cliente).filter(Cliente.id == datos.cliente_id).first()
-    if not cliente:
-        raise HTTPException(404, "Cliente no encontrado")
-    
-    # Validar sesión
-    sesion = db.query(Sesion).filter(Sesion.id == datos.sesion_id).first()
-    if not sesion:
-        raise HTTPException(404, "Sesión no encontrada")
-    if not sesion.activa:
-        raise HTTPException(409, "La sesión no está activa")
-    
-    # Validación 1: Cupo disponible
-    if sesion.cupos_ocupados >= sesion.cupo_maximo:
-        raise HTTPException(409, "La sesión no tiene cupos disponibles")
-    
-    # Validación 2: Solapamiento de CLIENTE
-    conflicto_cliente = db.query(Reserva).join(Sesion).filter(
-        Reserva.cliente_id == datos.cliente_id,
-        Sesion.fecha == sesion.fecha,
-        Sesion.hora_inicio < sesion.hora_fin,
-        Sesion.hora_fin > sesion.hora_inicio,
-        Sesion.id != sesion.id
-    ).first()
-    if conflicto_cliente:
-        raise HTTPException(409, "Ya tienes una reserva en ese horario")
-    
-    # Validación 3: Solapamiento de ENTRENADOR
-    conflicto_entrenador = db.query(Reserva).join(Sesion).filter(
-        Sesion.entrenador_id == sesion.entrenador_id,
-        Sesion.fecha == sesion.fecha,
-        Sesion.hora_inicio < sesion.hora_fin,
-        Sesion.hora_fin > sesion.hora_inicio,
-        Sesion.id != sesion.id
-    ).first()
-    if conflicto_entrenador:
-        raise HTTPException(409, "El entrenador ya tiene una clase en ese horario")
-    
-    # Crear reserva y actualizar cupos
-    reserva = Reserva(cliente_id=datos.cliente_id, sesion_id=datos.sesion_id)
-    sesion.cupos_ocupados += 1
-    
-    db.add(reserva)
-    db.commit()
-    db.refresh(reserva)
-    return reserva
+def crear_reserva(
+    datos: ReservaCreate, 
+    db: Session = Depends(get_db),
+    current_user: Usuario = Depends(get_current_user)  #  Cliente autenticado
+    ):
+    """Crear una reserva. Solo usuarios autenticados (clientes)."""
+    return _crear_reserva(db, datos)
 
 
 @router.get("/", response_model=List[ReservaResponse])
@@ -66,35 +31,28 @@ def listar_reservas(
     limit: int = 10,
     cliente_id: int = None,
     sesion_id: int = None,
-    db: Session = Depends(get_db)
-):
-    query = db.query(Reserva)
-    if cliente_id:
-        query = query.filter(Reserva.cliente_id == cliente_id)
-    if sesion_id:
-        query = query.filter(Reserva.sesion_id == sesion_id)
-    return query.offset(skip).limit(limit).all()
+    db: Session = Depends(get_db),
+    current_user: Usuario = Depends(require_role("Administrador"))  #  Solo Admin
+    ):
+    """Listar reservas. Solo Admin."""
+    return _listar_reservas(db, skip, limit, cliente_id, sesion_id)
 
 
 @router.get("/{reserva_id}", response_model=ReservaResponse)
-def obtener_reserva(reserva_id: int, db: Session = Depends(get_db)):
-    reserva = db.query(Reserva).filter(Reserva.id == reserva_id).first()
-    if not reserva:
-        raise HTTPException(404, "Reserva no encontrada")
-    return reserva
+def obtener_reserva(
+    reserva_id: int, 
+    db: Session = Depends(get_db),
+    current_user: Usuario = Depends(get_current_user)  #  Autenticado
+    ):
+    """Ver detalle de una reserva."""
+    return _obtener_reserva(db, reserva_id)
 
 
 @router.delete("/{reserva_id}", status_code=204)
-def cancelar_reserva(reserva_id: int, db: Session = Depends(get_db)):
-    reserva = db.query(Reserva).filter(Reserva.id == reserva_id).first()
-    if not reserva:
-        raise HTTPException(404, "Reserva no encontrada")
-    
-    # Liberar cupo
-    sesion = db.query(Sesion).filter(Sesion.id == reserva.sesion_id).first()
-    if sesion:
-        sesion.cupos_ocupados -= 1
-    
-    db.delete(reserva)
-    db.commit()
-    return None
+def cancelar_reserva(
+    reserva_id: int, 
+    db: Session = Depends(get_db),
+    current_user: Usuario = Depends(get_current_user)  #  Cliente o Admin
+    ):
+    """Cancelar una reserva. Cliente (su propia reserva) o Admin."""
+    _cancelar_reserva(db, reserva_id)

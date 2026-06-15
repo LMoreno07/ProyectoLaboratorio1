@@ -2,17 +2,23 @@ from pydantic import BaseModel, Field
 from typing import Optional
 from datetime import datetime
 
-class CategoriaMaquinaBase(BaseModel):
-    nombre: str = Field(..., min_length=3, max_length=100)
+class CategoriaMaquinaCreate(BaseModel):
+    nombre: str = Field(..., min_length=2, max_length=100)
+    descripcion: Optional[str] = None
+    class Config:
+        json_schema_extra = {
+            "example": {"nombre":"Cardio","descripcion":"Máquinas cardiovasculares"}
+        }
+
+class CategoriaMaquinaUpdate(BaseModel):
+    nombre: Optional[str] = Field(None, min_length=2,max_length=100)
     descripcion: Optional[str] = None
 
-class CategoriaMaquinaCreate(CategoriaMaquinaBase):
-    pass
-
-class CategoriaMaquinaResponse(CategoriaMaquinaBase):
+class CategoriaMaquinaResponse(BaseModel):
     id: int
-    created_at: datetime
-    updated_at: datetime
+    nombre: str
+    descripcion: str
 
     class Config:
         from_attributes = True
+        
